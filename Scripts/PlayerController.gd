@@ -81,20 +81,18 @@ func _draw_aim() -> void:
 		DebugDraw._draw_line_relative(line_start, line_end-line_start, 2, colours[i%2])
 		line_start = line_end
 
-
 func _potion_prep():
 	var potion_instance = potion.instantiate()
 	potion_marker.add_child(potion_instance)
 	potion_instance.global_position = potion_marker.global_position
-
-	var potion_direction = -potion_marker.global_transform.basis.z
 
 	if potion_thrown == true:
 		potion_instance.top_level = true
 		potion_instance.axis_lock_linear_y = false
 		potion_instance.set_collision_layer_value(2, true)
 		potion_instance.set_collision_mask_value(2, true)
-		potion_instance.apply_central_impulse(potion_direction * throw_strength)
+		potion_instance.apply_impulse(_throw_direction() as Vector3 * throw_strength)
+		potion_instance.apply_torque(Vector3(1, 0, 0) * 100)
 		potion_thrown = false
 
 func _ready():
