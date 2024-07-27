@@ -1,0 +1,71 @@
+[gd_scene load_steps=8 format=3 uid="uid://b1pcttldrawb2"]
+
+[ext_resource type="Script" path="res://Scripts/PlayerController.gd" id="1_a8qx7"]
+[ext_resource type="Texture2D" uid="uid://c77g232xhpkn1" path="res://addons/kenney_prototype_textures/dark/texture_07.png" id="1_unfd4"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pupaf"]
+sky_top_color = Color(0.475145, 0.137751, 0.159146, 1)
+sky_horizon_color = Color(0.2, 0.2, 0.2, 1)
+sky_curve = 1.0
+sun_angle_max = 0.0
+
+[sub_resource type="Sky" id="Sky_qbuea"]
+sky_material = SubResource("ProceduralSkyMaterial_pupaf")
+
+[sub_resource type="Environment" id="Environment_ccsym"]
+background_mode = 2
+sky = SubResource("Sky_qbuea")
+fog_light_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i80y1"]
+albedo_texture = ExtResource("1_unfd4")
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5umnx"]
+radius = 0.3
+height = 1.8
+
+[node name="Main" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 10, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ccsym")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+material_override = SubResource("StandardMaterial3D_i80y1")
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+size = Vector3(50, 2, 50)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGCombiner3D/CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+operation = 2
+size = Vector3(49, 2, 49)
+
+[node name="PlayerController" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_a8qx7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerController"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_5umnx")
+
+[node name="Camera3D" type="Camera3D" parent="PlayerController"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="DashTimer" type="Timer" parent="PlayerController"]
+wait_time = 0.15
+one_shot = true
+
+[node name="DashCooldown" type="Timer" parent="PlayerController"]
+wait_time = 0.75
+one_shot = true
+
+[connection signal="timeout" from="PlayerController/DashTimer" to="PlayerController" method="_on_dash_timer_timeout"]
+[connection signal="timeout" from="PlayerController/DashCooldown" to="PlayerController" method="_on_dash_cooldown_timeout"]
