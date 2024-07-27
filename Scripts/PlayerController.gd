@@ -24,7 +24,7 @@ var camera_look_input : Vector2
 
 @export_group("Throw Mechanic")
 @export var show_trajectory : bool = true
-@export var throw_strength : float = 15.0
+@export var throw_strength : float = 10.0
 var potion_thrown : bool = false
 var potion = preload("res://Models/Potion.tscn")
 
@@ -42,16 +42,16 @@ func _on_dash_cooldown_timeout():
 func _throw_direction() -> Vector3:
 	return -potion_marker.global_transform.basis.z
 
-func raycast_query(point_a : Vector3, point_b : Vector3):
+func raycast_query(point_a : Vector3, point_b : Vector3) -> Dictionary:
 	var space_state = get_world_3d().direct_space_state
 
 	# Uses global coordinates, not local to node
-	var query = PhysicsRayQueryParameters3D.create(point_a, point_b, 2 << 0)
+	var query = PhysicsRayQueryParameters3D.create(point_a, point_b, 1 << 0)
 	query.hit_from_inside = false
 	var result = space_state.intersect_ray(query)
 	if result:
-		DebugDraw._draw_line_relative(point_a, result.position-point_a, 5, Color.PURPLE)
-		return result
+		DebugDraw._draw_line_relative(point_a, result.position-point_a, 2, Color.PURPLE)
+	return result
 
 func _draw_aim() -> void:
 	var potion_velocity : Vector3 = _throw_direction() as Vector3
@@ -62,10 +62,10 @@ func _draw_aim() -> void:
 	var start_position = potion_marker.global_position
 	var line_start = start_position
 	var line_end = start_position
-	var colours = [Color.RED, Color.WHITE]
+	var colours = [Color.RED, Color.GRAY]
 
 	for i in range(1, 151): # from 1 to 5 points of iteration
-		potion_velocity.y += gravity * tstep
+		potion_velocity.y -= gravity * tstep
 		line_end = line_start
 		line_end += potion_velocity * tstep
 
@@ -78,7 +78,7 @@ func _draw_aim() -> void:
 			break
 		
 		# Draw Aim Line
-		DebugDraw._draw_line_relative(line_start, line_end-line_start, 5, colours[i%2])
+		DebugDraw._draw_line_relative(line_start, line_end-line_start, 2, colours[i%2])
 		line_start = line_end
 
 
@@ -92,8 +92,8 @@ func _potion_prep():
 	if potion_thrown == true:
 		potion_instance.top_level = true
 		potion_instance.axis_lock_linear_y = false
-		potion_instance.set_collision_layer_value(1, true)
-		potion_instance.set_collision_mask_value(1, true)
+		potion_instance.set_collision_layer_value(2, true)
+		potion_instance.set_collision_mask_value(2, true)
 		potion_instance.apply_central_impulse(potion_direction * throw_strength)
 		potion_thrown = false
 
