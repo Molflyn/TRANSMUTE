@@ -57,6 +57,7 @@ size = Vector3(49, 2, 49)
 [node name="PlayerController" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_a8qx7")
+show_trajectory = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -81,5 +82,9 @@ one_shot = true
 wait_time = 0.75
 one_shot = true
 
+[node name="ThrowCooldown" type="Timer" parent="PlayerController"]
+wait_time = 0.5
+
 [connection signal="timeout" from="PlayerController/DashTimer" to="PlayerController" method="_on_dash_timer_timeout"]
 [connection signal="timeout" from="PlayerController/DashCooldown" to="PlayerController" method="_on_dash_cooldown_timeout"]
+[connection signal="timeout" from="PlayerController/ThrowCooldown" to="PlayerController" method="_on_throw_cooldown_timeout"]

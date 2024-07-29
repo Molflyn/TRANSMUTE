@@ -25,6 +25,7 @@ var camera_look_input : Vector2
 @export_group("Throw Mechanic")
 @export var show_trajectory : bool = true
 @export var throw_strength : float = 10.0
+var can_throw : bool = true
 var potion_thrown : bool = false
 var potion = preload("res://Models/Potion.tscn")
 
@@ -38,6 +39,9 @@ func _on_dash_timer_timeout():
 
 func _on_dash_cooldown_timeout():
 	can_dash = true
+
+func _on_throw_cooldown_timeout():
+	can_throw = true
 
 func _throw_direction() -> Vector3:
 	return -potion_marker.global_transform.basis.z
@@ -133,9 +137,11 @@ func _physics_process(delta):
 		$DashCooldown.start()
 	
 	# Throw Mechanic
-	if Input.is_action_just_pressed("throw_potion"):
+	if Input.is_action_just_pressed("throw_potion") and can_throw:
 		potion_thrown = true
 		_potion_prep()
+		can_throw = false
+		$ThrowCooldown.start()
 
 	# Draw Throw Trajectory
 	if show_trajectory:
@@ -154,3 +160,4 @@ func _physics_process(delta):
 		else:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	
+
