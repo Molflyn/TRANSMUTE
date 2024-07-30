@@ -5,7 +5,7 @@ extends CharacterBody3D
 @onready var potion_marker : Marker3D = get_node("Camera3D/Marker3D")
 @onready var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var drag = ProjectSettings.get_setting("physics/3d/default_linear_damp")
-
+	
 @export_group("Ground Movement")
 @export var move_speed : float = 5.5
 @export var acceleration : float = 20.0
@@ -22,6 +22,12 @@ var can_move : bool = true
 @export var look_sens : float = 0.002
 var camera_look_input : Vector2
 
+@export_group("Potion Sway")
+@export var sway_min : Vector2 = Vector2(-20, -20)
+@export var sway_max : Vector2 = Vector2(20, 20)
+@export var sway_amount : float = 0.5
+var mouse_move : Vector2
+
 @export_group("Throw Mechanic")
 @export var show_trajectory : bool = true
 @export var throw_strength : float = 10.0
@@ -30,8 +36,9 @@ var potion_thrown : bool = false
 var potion = preload("res://Models/Potion.tscn")
 
 func _unhandled_input(event):
-		if event is InputEventMouseMotion:
-			camera_look_input = event.relative
+	if event is InputEventMouseMotion:
+		camera_look_input = event.relative
+		mouse_move = event.relative
 
 func _on_dash_timer_timeout():
 	is_dashing = false
@@ -96,14 +103,23 @@ func _potion_prep():
 		potion_instance.set_collision_layer_value(2, true)
 		potion_instance.set_collision_mask_value(2, true)
 		potion_instance.apply_impulse(_throw_direction() as Vector3 * throw_strength)
-		potion_instance.apply_torque(Vector3(1, 0, 0) * 100)
+		potion_instance.apply_torque(Vector3(randf_range(0, 1), 0, randf_range(0, 1) * 100))
 		potion_thrown = false
+
+func _potion_sway(delta) -> void:
+	var potion_mesh : Node3D = get_node("Camera3D/Marker3D/PotionRB/Potion")
+	var zero_vector : Vector2 = Vector2(0, 0)
+
+	potion_mesh.position.x = lerp(zero_vector.x, zero_vector.x-mouse_move.x * 0.1, delta * sway_amount)
+	potion_mesh.position.y = lerp(zero_vector.y, zero_vector.y+mouse_move.y * 0.1, delta * sway_amount)
 
 func _ready():
 	# Hide Mouse
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+	# Load Potion
 	_potion_prep()
-	
+
 func _physics_process(delta):
 	# Add the gravity
 	if not is_on_floor():
@@ -152,6 +168,9 @@ func _physics_process(delta):
 	camera.rotate_x(-camera_look_input.y * look_sens)
 	camera.rotation.x = clamp(camera.rotation.x, -1.5, 1.5)
 	camera_look_input = Vector2.ZERO
+
+	# Potion Sway
+	_potion_sway(delta)
 
 	# Mouse on Screen Toggle
 	if Input.is_action_just_pressed("ui_cancel"):
