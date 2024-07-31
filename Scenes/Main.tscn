@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://b1pcttldrawb2"]
+[gd_scene load_steps=11 format=3 uid="uid://b1pcttldrawb2"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerController.gd" id="1_a8qx7"]
 [ext_resource type="Texture2D" uid="uid://c77g232xhpkn1" path="res://addons/kenney_prototype_textures/dark/texture_07.png" id="1_unfd4"]
+[ext_resource type="Script" path="res://Scripts/PauseMenu.gd" id="3_q4vep"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pupaf"]
 sky_top_color = Color(0.475145, 0.137751, 0.159146, 1)
@@ -29,6 +30,13 @@ height = 1.8
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5umnx"]
 radius = 0.3
 height = 1.8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h7gu2"]
+bg_color = Color(0, 0, 0, 0.431373)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="Main" type="Node3D"]
 
@@ -85,6 +93,158 @@ one_shot = true
 [node name="ThrowCooldown" type="Timer" parent="PlayerController"]
 wait_time = 0.5
 
+[node name="VersionLabel" type="Label" parent="PlayerController"]
+offset_left = 14.0
+offset_right = 200.0
+offset_bottom = 40.0
+text = "TRANSMUTE Test v.0.2.5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PauseMenu" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("3_q4vep")
+
+[node name="ColorRect" type="ColorRect" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.588235)
+
+[node name="WelcomeLabel" type="Label" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.278125
+anchor_top = 0.0222222
+anchor_right = 0.721875
+anchor_bottom = 0.112963
+grow_horizontal = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 35
+text = "Welcome to TRANSMUTE!"
+metadata/_edit_use_anchors_ = true
+
+[node name="DisclaimerLabel" type="Label" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0796875
+anchor_top = 0.144444
+anchor_right = 0.920313
+anchor_bottom = 0.324074
+offset_bottom = 1.52588e-05
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 15
+text = "*DISCLAIMER*: This is not a playable game, yet...
+I was only able to get this much done during Pirate Software's Game Jam 15 from July 17th to July 31st 2024.
+As this is my first proper game, I used this game jam as an opportunity to learn more about game development.
+I'm surprised that a complete beginner like me can learn so much in 2 weeks, such as, but not limited to:"
+metadata/_edit_use_anchors_ = true
+
+[node name="PointsLabel" type="Label" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.120833
+anchor_top = 0.346296
+anchor_right = 0.821875
+anchor_bottom = 0.525926
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 15
+text = "- Creating a Game Design Document
+- The Godot Game Engine (Programming in GDScript)
+- 3D Modelling (High Poly to Low Poly Workflow, Texture Baking, UV Unwrapping, etc.)
+- Version Control (Used Git for the first time!)"
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="DisclaimerLabel2" type="Label" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0802083
+anchor_top = 0.55
+anchor_right = 0.920833
+anchor_bottom = 0.646296
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 15
+text = "Checkout the Game Design Document linked below to get the idea for the game and to follow the dev timeline!
+I plan to continue working on this game until a full prototype release so stay tuned!"
+metadata/_edit_use_anchors_ = true
+
+[node name="DisclaimerLabel3" type="Label" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0802083
+anchor_top = 0.657407
+anchor_right = 0.920833
+anchor_bottom = 0.698148
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 15
+text = "Thank You Pirate Software for the opportunity!"
+metadata/_edit_use_anchors_ = true
+
+[node name="ControlsLabel" type="Label" parent="PauseMenu"]
+layout_mode = 0
+anchor_left = 0.0427083
+anchor_top = 0.740741
+anchor_right = 0.183333
+anchor_bottom = 0.968518
+theme_override_colors/font_color = Color(0.60933, 0.60933, 0.60933, 1)
+theme_override_font_sizes/font_size = 13
+text = "Controls:
+ESC - Exit/Enter Menu
+WASD - Move
+Space - Jump
+LShift - Dash
+LMB - Throw Potion"
+metadata/_edit_use_anchors_ = true
+
+[node name="ReloadButton" type="Button" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.252083
+anchor_top = 0.824074
+anchor_right = 0.367708
+anchor_bottom = 0.898148
+offset_bottom = 3.05176e-05
+theme_override_styles/normal = SubResource("StyleBoxFlat_h7gu2")
+text = "Reload Game"
+metadata/_edit_use_anchors_ = true
+
+[node name="DrawAimButton" type="Button" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.463542
+anchor_top = 0.824074
+anchor_right = 0.579167
+anchor_bottom = 0.898148
+offset_bottom = 3.05176e-05
+theme_override_styles/normal = SubResource("StyleBoxFlat_h7gu2")
+toggle_mode = true
+text = "Draw Aim"
+metadata/_edit_use_anchors_ = true
+
 [connection signal="timeout" from="PlayerController/DashTimer" to="PlayerController" method="_on_dash_timer_timeout"]
 [connection signal="timeout" from="PlayerController/DashCooldown" to="PlayerController" method="_on_dash_cooldown_timeout"]
 [connection signal="timeout" from="PlayerController/ThrowCooldown" to="PlayerController" method="_on_throw_cooldown_timeout"]
+[connection signal="pressed" from="PauseMenu/ReloadButton" to="PauseMenu" method="_on_reload_button_pressed"]
+[connection signal="toggled" from="PauseMenu/DrawAimButton" to="PlayerController" method="_on_draw_aim_button_toggled"]

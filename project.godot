@@ -19,6 +19,12 @@ config/icon="res://icon.svg"
 
 DebugDraw="*res://Scenes/DebugDraw.tscn"
 
+[display]
+
+window/size/viewport_width=960
+window/size/viewport_height=540
+window/vsync/vsync_mode=0
+
 [input]
 
 move_forward={

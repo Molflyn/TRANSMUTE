@@ -19,12 +19,12 @@ var can_move : bool = true
 @export var grav_multiplier : float = 1.5
 
 @export_group("Camera Movement")
-@export var look_sens : float = 0.002
+@export var look_sens : float = 0.01
 var camera_look_input : Vector2
 
 @export_group("Potion Sway")
-@export var sway_min : Vector2 = Vector2(-20, -20)
-@export var sway_max : Vector2 = Vector2(20, 20)
+@export var sway_min : Vector2 = Vector2(-50, -50)
+@export var sway_max : Vector2 = Vector2(50, 50)
 @export var sway_amount : float = 0.5
 var mouse_move : Vector2
 
@@ -110,8 +110,8 @@ func _potion_sway(delta) -> void:
 	var potion_mesh : Node3D = get_node("Camera3D/Marker3D/PotionRB/Potion")
 	var zero_vector : Vector2 = Vector2(0, 0)
 
-	potion_mesh.position.x = lerp(zero_vector.x, zero_vector.x-mouse_move.x * 0.1, delta * sway_amount)
-	potion_mesh.position.y = lerp(zero_vector.y, zero_vector.y+mouse_move.y * 0.1, delta * sway_amount)
+	potion_mesh.position.x = lerp(zero_vector.x, zero_vector.x-mouse_move.x * 0.2, delta * sway_amount)
+	potion_mesh.position.y = lerp(zero_vector.y, zero_vector.y+mouse_move.y * 0.2, delta * sway_amount)
 
 func _ready():
 	# Hide Mouse
@@ -172,11 +172,9 @@ func _physics_process(delta):
 	# Potion Sway
 	_potion_sway(delta)
 
-	# Mouse on Screen Toggle
-	if Input.is_action_just_pressed("ui_cancel"):
-		if Input.get_mouse_mode() == Input.MOUSE_MODE_VISIBLE:
-			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		else:
-			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	
 
+func _on_draw_aim_button_toggled(toggled_on:bool):
+	if show_trajectory == false:
+		show_trajectory = true
+	else:
+		show_trajectory = false
