@@ -97,7 +97,7 @@ wait_time = 0.5
 offset_left = 14.0
 offset_right = 200.0
 offset_bottom = 40.0
-text = "TRANSMUTE Test v.0.2.5"
+text = "TRANSMUTE  v0.2.5.stable"
 horizontal_alignment = 1
 vertical_alignment = 1
 
