@@ -131,6 +131,8 @@ shader_parameter/wobble = Vector2(0, 0)
 collision_layer = 0
 collision_mask = 0
 axis_lock_linear_y = true
+max_contacts_reported = 1
+contact_monitor = true
 script = ExtResource("1_ednsy")
 
 [node name="Potion" type="Node3D" parent="."]
