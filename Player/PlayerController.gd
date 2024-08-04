@@ -33,7 +33,7 @@ var mouse_move : Vector2
 @export var throw_strength : float = 10.0
 var can_throw : bool = true
 var potion_thrown : bool = false
-var potion = preload("res://Models/Potion.tscn")
+@export var potion : PackedScene
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
@@ -172,9 +172,10 @@ func _physics_process(delta):
 	# Potion Sway
 	_potion_sway(delta)
 
+	# ESC Mouse Window
+	if Input.is_action_just_pressed("ui_cancel"):
+		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
-func _on_draw_aim_button_toggled(toggled_on:bool):
-	if show_trajectory == false:
-		show_trajectory = true
-	else:
-		show_trajectory = false

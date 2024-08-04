@@ -1,8 +1,8 @@
 [gd_scene load_steps=17 format=3 uid="uid://b71mno2uxrf2d"]
 
-[ext_resource type="Script" path="res://Scripts/Potion.gd" id="1_ednsy"]
-[ext_resource type="Shader" path="res://Shaders/stylized_liquid.gdshader" id="2_0hdaw"]
-[ext_resource type="Script" path="res://Scripts/LiquidWobble.gd" id="3_545yq"]
+[ext_resource type="Script" path="res://Player/Potion/Scripts/Potion.gd" id="1_pq0dl"]
+[ext_resource type="Shader" path="res://Player/Potion/Mats/stylized_liquid.gdshader" id="2_jq0po"]
+[ext_resource type="Script" path="res://Player/Potion/Scripts/LiquidWobble.gd" id="3_lcmww"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l6ffm"]
 
@@ -116,7 +116,7 @@ shadow_mesh = SubResource("ArrayMesh_5fqx8")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xy1pm"]
 render_priority = 0
-shader = ExtResource("2_0hdaw")
+shader = ExtResource("2_jq0po")
 shader_parameter/liquid_height = 0.5
 shader_parameter/liquid_surface_color = Color(0.994271, 0.388454, 0.483644, 1)
 shader_parameter/rim_emission_intensity = 0.2
@@ -133,7 +133,7 @@ collision_mask = 0
 axis_lock_linear_y = true
 max_contacts_reported = 1
 contact_monitor = true
-script = ExtResource("1_ednsy")
+script = ExtResource("1_pq0dl")
 
 [node name="Potion" type="Node3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
@@ -158,7 +158,7 @@ cast_shadow = 0
 mesh = SubResource("ArrayMesh_7kc40")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("ShaderMaterial_xy1pm")
-script = ExtResource("3_545yq")
+script = ExtResource("3_lcmww")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.257113, 0, 0, 0, 0.257113, 0, 0, 0, 0.257113, 0, -0.0807875, 0)

@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://b1pcttldrawb2"]
+[gd_scene load_steps=10 format=3 uid="uid://b1pcttldrawb2"]
 
-[ext_resource type="Script" path="res://Scripts/PlayerController.gd" id="1_a8qx7"]
-[ext_resource type="Texture2D" uid="uid://c77g232xhpkn1" path="res://addons/kenney_prototype_textures/dark/texture_07.png" id="1_unfd4"]
+[ext_resource type="Texture2D" uid="uid://c77g232xhpkn1" path="res://addons/kenney_prototype_textures/dark/texture_07.png" id="1_tn1yo"]
+[ext_resource type="Script" path="res://Player/PlayerController.gd" id="2_i216d"]
+[ext_resource type="PackedScene" uid="uid://b71mno2uxrf2d" path="res://Player/Potion/Potion.tscn" id="3_c8nx8"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pupaf"]
 sky_top_color = Color(0.475145, 0.137751, 0.159146, 1)
@@ -18,9 +19,13 @@ sky = SubResource("Sky_qbuea")
 fog_light_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i80y1"]
-albedo_texture = ExtResource("1_unfd4")
+albedo_texture = ExtResource("1_tn1yo")
 uv1_triplanar = true
 uv1_world_triplanar = true
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_2qry5"]
+radius = 0.3
+height = 1.8
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5umnx"]
 radius = 0.3
@@ -38,6 +43,8 @@ environment = SubResource("Environment_ccsym")
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
 material_override = SubResource("StandardMaterial3D_i80y1")
 use_collision = true
+collision_layer = 3
+collision_mask = 3
 
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -50,7 +57,23 @@ size = Vector3(49, 2, 49)
 
 [node name="PlayerController" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-script = ExtResource("1_a8qx7")
+script = ExtResource("2_i216d")
+move_speed = null
+acceleration = null
+dash_speed = null
+jump_velocity = null
+grav_multiplier = null
+look_sens = null
+sway_min = null
+sway_max = null
+sway_amount = null
+show_trajectory = false
+throw_strength = null
+potion = ExtResource("3_c8nx8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerController"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_2qry5")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -58,6 +81,10 @@ shape = SubResource("CapsuleShape3D_5umnx")
 
 [node name="Camera3D" type="Camera3D" parent="PlayerController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+current = true
+
+[node name="Marker3D" type="Marker3D" parent="PlayerController/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.250953, -0.181049, -0.625865)
 
 [node name="DashTimer" type="Timer" parent="PlayerController"]
 wait_time = 0.15
@@ -67,5 +94,17 @@ one_shot = true
 wait_time = 0.75
 one_shot = true
 
+[node name="ThrowCooldown" type="Timer" parent="PlayerController"]
+wait_time = 0.5
+
+[node name="VersionLabel" type="Label" parent="PlayerController"]
+offset_left = 14.0
+offset_right = 200.0
+offset_bottom = 40.0
+text = "TRANSMUTE  v0.1.0.develop"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [connection signal="timeout" from="PlayerController/DashTimer" to="PlayerController" method="_on_dash_timer_timeout"]
 [connection signal="timeout" from="PlayerController/DashCooldown" to="PlayerController" method="_on_dash_cooldown_timeout"]
+[connection signal="timeout" from="PlayerController/ThrowCooldown" to="PlayerController" method="_on_throw_cooldown_timeout"]

@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://naau274lvy0s"
-path="res://.godot/imported/Potion.glb-c4c9b5a4460698d8bee669d7b6f9ad54.scn"
+path="res://.godot/imported/Potion.glb-933b601b6e2aa55de5b9c43b1d581350.scn"
 
 [deps]
 
-source_file="res://Models/Potion.glb"
-dest_files=["res://.godot/imported/Potion.glb-c4c9b5a4460698d8bee669d7b6f9ad54.scn"]
+source_file="res://Player/Potion/Models/Potion.glb"
+dest_files=["res://.godot/imported/Potion.glb-933b601b6e2aa55de5b9c43b1d581350.scn"]
 
 [params]
 
