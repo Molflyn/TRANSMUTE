@@ -19,26 +19,19 @@ var can_move : bool = true
 @export var grav_multiplier : float = 1.5
 
 @export_group("Camera Movement")
-@export var look_sens : float = 0.01
+@export var look_sens : float = 1
 var camera_look_input : Vector2
-
-@export_group("Potion Sway")
-@export var sway_min : Vector2 = Vector2(-50, -50)
-@export var sway_max : Vector2 = Vector2(50, 50)
-@export var sway_amount : float = 0.5
-var mouse_move : Vector2
 
 @export_group("Throw Mechanic")
 @export var show_trajectory : bool = true
 @export var throw_strength : float = 10.0
+@export var potion : PackedScene
 var can_throw : bool = true
 var potion_thrown : bool = false
-@export var potion : PackedScene
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
 		camera_look_input = event.relative
-		mouse_move = event.relative
 
 func _on_dash_timer_timeout():
 	is_dashing = false
@@ -106,19 +99,31 @@ func _potion_prep():
 		potion_instance.apply_torque(Vector3(randf_range(0, 1), 0, randf_range(0, 1) * 100))
 		potion_thrown = false
 
-func _potion_sway(delta) -> void:
-	var potion_mesh : Node3D = get_node("Camera3D/Marker3D/PotionRB/Potion")
-	var zero_vector : Vector2 = Vector2(0, 0)
+func throw_potion():
+	if Input.is_action_just_pressed("throw_potion") and can_throw:
+		potion_thrown = true
+		_potion_prep()
+		can_throw = false
+		$ThrowCooldown.start()
 
-	potion_mesh.position.x = lerp(zero_vector.x, zero_vector.x-mouse_move.x * 0.2, delta * sway_amount)
-	potion_mesh.position.y = lerp(zero_vector.y, zero_vector.y+mouse_move.y * 0.2, delta * sway_amount)
+func camera_look(delta):
+	rotate_y(-camera_look_input.x * delta * look_sens)
+	camera.rotate_x(-camera_look_input.y * delta * look_sens)
+	camera.rotation.x = clamp(camera.rotation.x, -1.5, 1.5)
+	camera_look_input = Vector2.ZERO
 
 func _ready():
-	# Hide Mouse
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-
-	# Load Potion
 	_potion_prep()
+
+func _process(delta):
+	if show_trajectory:
+		_draw_aim()
+
+	# Camera Look
+	camera_look(delta)
+
+	# Potion Throw Mechanic
+	throw_potion()
 
 func _physics_process(delta):
 	# Add the gravity
@@ -128,12 +133,12 @@ func _physics_process(delta):
 	# Handle jump
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_velocity
-
-	# Get the input direction and handle the movement/deceleration
+	
+	# Handle Movement
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	var target_velocity = direction * move_speed
-	
+
 	if not is_dashing:
 		velocity.x = lerp(velocity.x, target_velocity.x, acceleration * delta)
 		velocity.z = lerp(velocity.z, target_velocity.z, acceleration * delta)
@@ -151,31 +156,5 @@ func _physics_process(delta):
 			velocity = dash_speed * direction
 		$DashTimer.start()
 		$DashCooldown.start()
-	
-	# Throw Mechanic
-	if Input.is_action_just_pressed("throw_potion") and can_throw:
-		potion_thrown = true
-		_potion_prep()
-		can_throw = false
-		$ThrowCooldown.start()
 
-	# Draw Throw Trajectory
-	if show_trajectory:
-		_draw_aim()
-
-	# Camera Look
-	rotate_y(-camera_look_input.x * look_sens)
-	camera.rotate_x(-camera_look_input.y * look_sens)
-	camera.rotation.x = clamp(camera.rotation.x, -1.5, 1.5)
-	camera_look_input = Vector2.ZERO
-
-	# Potion Sway
-	_potion_sway(delta)
-
-	# ESC Mouse Window
-	if Input.is_action_just_pressed("ui_cancel"):
-		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-
+		
