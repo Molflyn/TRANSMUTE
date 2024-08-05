@@ -10,6 +10,9 @@ extends CharacterBody3D
 @export var move_speed : float = 5.5
 @export var acceleration : float = 20.0
 @export var dash_speed : float = 20.0
+var move_direction : Vector3
+var target_velocity : Vector3
+var input_dir : Vector2
 var is_dashing : bool = false
 var can_dash : bool = true
 var can_move : bool = true
@@ -33,6 +36,36 @@ func _unhandled_input(event):
 	if event is InputEventMouseMotion:
 		camera_look_input = event.relative
 
+	move_input()
+	jump()
+	dash()
+	
+	throw_potion()
+	
+	toggle_trajectory()
+
+
+func move_input():
+	input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	move_direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	target_velocity = move_direction * move_speed
+
+func jump():
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		velocity.y = jump_velocity
+
+func dash():
+	if Input.is_action_just_pressed("dash") and can_move and can_dash and !is_dashing:
+		is_dashing = true
+		can_move = false
+		can_dash = false
+		if move_direction == Vector3.ZERO:
+			velocity = dash_speed * -self.global_transform.basis.z.normalized()
+		else:
+			velocity = dash_speed * move_direction
+		$DashTimer.start()
+		$DashCooldown.start()
+
 func _on_dash_timer_timeout():
 	is_dashing = false
 	can_move = true
@@ -40,11 +73,44 @@ func _on_dash_timer_timeout():
 func _on_dash_cooldown_timeout():
 	can_dash = true
 
+func camera_look(delta):
+	rotate_y(-camera_look_input.x * delta * look_sens)
+	camera.rotate_x(-camera_look_input.y * delta * look_sens)
+	camera.rotation.x = clamp(camera.rotation.x, -1.5, 1.5)
+	camera_look_input = Vector2.ZERO
+
+func potion_prep():
+	var potion_instance = potion.instantiate()
+	potion_marker.add_child(potion_instance)
+	potion_instance.global_position = potion_marker.global_position
+
+	if potion_thrown == true:
+		potion_instance.top_level = true
+		potion_instance.axis_lock_linear_y = false
+		potion_instance.set_collision_layer_value(2, true)
+		potion_instance.set_collision_mask_value(2, true)
+		potion_instance.apply_impulse(throw_direction() as Vector3 * throw_strength)
+		potion_instance.apply_torque(Vector3(randf_range(0, 1), 0, randf_range(0, 1) * 100))
+		potion_thrown = false
+
+func throw_potion():
+	if Input.is_action_just_pressed("throw_potion") and can_throw:
+		potion_thrown = true
+		potion_prep()
+		can_throw = false
+		$ThrowCooldown.start()
+
+func throw_direction() -> Vector3:
+	return -potion_marker.global_transform.basis.z
+
 func _on_throw_cooldown_timeout():
 	can_throw = true
 
-func _throw_direction() -> Vector3:
-	return -potion_marker.global_transform.basis.z
+func toggle_trajectory():
+	if Input.is_action_just_pressed("draw_aim") and show_trajectory == false:
+		show_trajectory = true
+	elif Input.is_action_just_pressed("draw_aim") and show_trajectory == true:
+		show_trajectory = false
 
 func raycast_query(point_a : Vector3, point_b : Vector3) -> Dictionary:
 	var space_state = get_world_3d().direct_space_state
@@ -57,8 +123,8 @@ func raycast_query(point_a : Vector3, point_b : Vector3) -> Dictionary:
 		DebugDraw._draw_line_relative(point_a, result.position-point_a, 2, Color.PURPLE)
 	return result
 
-func _draw_aim() -> void:
-	var potion_velocity : Vector3 = _throw_direction() as Vector3
+func draw_aim() -> void:
+	var potion_velocity : Vector3 = throw_direction() as Vector3
 	potion_velocity *= throw_strength
 
 	# How much time in each iteration
@@ -85,76 +151,21 @@ func _draw_aim() -> void:
 		DebugDraw._draw_line_relative(line_start, line_end-line_start, 2, colours[i%2])
 		line_start = line_end
 
-func _potion_prep():
-	var potion_instance = potion.instantiate()
-	potion_marker.add_child(potion_instance)
-	potion_instance.global_position = potion_marker.global_position
-
-	if potion_thrown == true:
-		potion_instance.top_level = true
-		potion_instance.axis_lock_linear_y = false
-		potion_instance.set_collision_layer_value(2, true)
-		potion_instance.set_collision_mask_value(2, true)
-		potion_instance.apply_impulse(_throw_direction() as Vector3 * throw_strength)
-		potion_instance.apply_torque(Vector3(randf_range(0, 1), 0, randf_range(0, 1) * 100))
-		potion_thrown = false
-
-func throw_potion():
-	if Input.is_action_just_pressed("throw_potion") and can_throw:
-		potion_thrown = true
-		_potion_prep()
-		can_throw = false
-		$ThrowCooldown.start()
-
-func camera_look(delta):
-	rotate_y(-camera_look_input.x * delta * look_sens)
-	camera.rotate_x(-camera_look_input.y * delta * look_sens)
-	camera.rotation.x = clamp(camera.rotation.x, -1.5, 1.5)
-	camera_look_input = Vector2.ZERO
-
 func _ready():
-	_potion_prep()
+	potion_prep()
 
 func _process(delta):
 	if show_trajectory:
-		_draw_aim()
-
-	# Camera Look
+		draw_aim()
+	
 	camera_look(delta)
 
-	# Potion Throw Mechanic
-	throw_potion()
-
 func _physics_process(delta):
-	# Add the gravity
 	if not is_on_floor():
 		velocity.y -= gravity * grav_multiplier * delta
-
-	# Handle jump
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = jump_velocity
-	
-	# Handle Movement
-	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
-	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	var target_velocity = direction * move_speed
 
 	if not is_dashing:
 		velocity.x = lerp(velocity.x, target_velocity.x, acceleration * delta)
 		velocity.z = lerp(velocity.z, target_velocity.z, acceleration * delta)
 		
 	move_and_slide()
-
-	# Dash Mechanic
-	if Input.is_action_just_pressed("dash") and can_move and can_dash and !is_dashing:
-		is_dashing = true
-		can_move = false
-		can_dash = false
-		if direction == Vector3.ZERO:
-			velocity = dash_speed * -self.global_transform.basis.z.normalized()
-		else:
-			velocity = dash_speed * direction
-		$DashTimer.start()
-		$DashCooldown.start()
-
-		

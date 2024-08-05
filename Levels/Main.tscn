@@ -83,11 +83,11 @@ wait_time = 0.15
 one_shot = true
 
 [node name="DashCooldown" type="Timer" parent="PlayerController"]
-wait_time = 0.75
+wait_time = 0.8
 one_shot = true
 
 [node name="ThrowCooldown" type="Timer" parent="PlayerController"]
-wait_time = 0.5
+wait_time = 0.6
 
 [node name="VersionLabel" type="Label" parent="PlayerController"]
 offset_left = 14.0

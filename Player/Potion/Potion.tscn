@@ -1,8 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://b71mno2uxrf2d"]
+[gd_scene load_steps=18 format=3 uid="uid://b71mno2uxrf2d"]
 
 [ext_resource type="Script" path="res://Player/Potion/Scripts/Potion.gd" id="1_pq0dl"]
 [ext_resource type="Shader" path="res://Player/Potion/Mats/stylized_liquid.gdshader" id="2_jq0po"]
+[ext_resource type="Material" uid="uid://c4np1b38f4phs" path="res://Player/Potion/Mats/Brown.tres" id="2_nmpxc"]
 [ext_resource type="Script" path="res://Player/Potion/Scripts/LiquidWobble.gd" id="3_lcmww"]
+[ext_resource type="Material" uid="uid://cf8v0eiw46j7g" path="res://Player/Potion/Mats/Glass.tres" id="3_rak2x"]
+[ext_resource type="PackedScene" uid="uid://s55t1tu1bq3e" path="res://Player/Potion/Models/Potion_Fractured.glb" id="5_oishs"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l6ffm"]
 
@@ -38,10 +41,6 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_mc5ov")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_38ljp"]
-albedo_color = Color(0.356523, 0.19777, 0.124226, 1)
-heightmap_scale = -16.0
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h8fmx"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_wjecg"]
@@ -75,10 +74,6 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_wjecg")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k21ob"]
-transparency = 1
-albedo_color = Color(0.435294, 0.435294, 0.435294, 0.717647)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8decg"]
 
@@ -137,20 +132,21 @@ script = ExtResource("1_pq0dl")
 
 [node name="Potion" type="Node3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+visible = false
 
 [node name="Cap_LP" type="MeshInstance3D" parent="Potion"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.820652, 0)
 cast_shadow = 0
 mesh = SubResource("ArrayMesh_txw0i")
 skeleton = NodePath("")
-surface_material_override/0 = SubResource("StandardMaterial3D_38ljp")
+surface_material_override/0 = ExtResource("2_nmpxc")
 
 [node name="Bottle_LP" type="MeshInstance3D" parent="Potion"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.820652, 0)
 cast_shadow = 0
 mesh = SubResource("ArrayMesh_l112j")
 skeleton = NodePath("")
-surface_material_override/0 = SubResource("StandardMaterial3D_k21ob")
+surface_material_override/0 = ExtResource("3_rak2x")
 
 [node name="Liquid_LP" type="MeshInstance3D" parent="Potion"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.820652, 0)
@@ -164,4 +160,48 @@ script = ExtResource("3_lcmww")
 transform = Transform3D(0.257113, 0, 0, 0, 0.257113, 0, 0, 0, 0.257113, 0, -0.0807875, 0)
 shape = SubResource("SphereShape3D_a80k7")
 
+[node name="Potion_Fractured" parent="." instance=ExtResource("5_oishs")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="Cap_LP_Fractured" parent="Potion_Fractured" index="0"]
+surface_material_override/0 = ExtResource("2_nmpxc")
+
+[node name="Bottle_LP_Fractured_cell" parent="Potion_Fractured" index="1"]
+surface_material_override/0 = ExtResource("3_rak2x")
+
+[node name="Bottle_LP_Fractured_cell_001" parent="Potion_Fractured" index="2"]
+surface_material_override/0 = ExtResource("3_rak2x")
+
+[node name="Bottle_LP_Fractured_cell_002" parent="Potion_Fractured" index="3"]
+surface_material_override/0 = ExtResource("3_rak2x")
+
+[node name="Bottle_LP_Fractured_cell_003" parent="Potion_Fractured" index="4"]
+surface_material_override/0 = ExtResource("3_rak2x")
+
+[node name="Bottle_LP_Fractured_cell_004" parent="Potion_Fractured" index="5"]
+surface_material_override/0 = ExtResource("3_rak2x")
+
+[node name="Bottle_LP_Fractured_cell_005" parent="Potion_Fractured" index="6"]
+surface_material_override/0 = ExtResource("3_rak2x")
+
+[node name="Bottle_LP_Fractured_cell_006" parent="Potion_Fractured" index="7"]
+surface_material_override/0 = ExtResource("3_rak2x")
+
+[node name="Bottle_LP_Fractured_cell_007" parent="Potion_Fractured" index="8"]
+surface_material_override/0 = ExtResource("3_rak2x")
+
+[node name="Bottle_LP_Fractured_cell_008" parent="Potion_Fractured" index="9"]
+surface_material_override/0 = ExtResource("3_rak2x")
+
+[node name="Bottle_LP_Fractured_cell_009" parent="Potion_Fractured" index="10"]
+surface_material_override/0 = ExtResource("3_rak2x")
+
+[node name="Bottle_LP_Fractured_cell_010" parent="Potion_Fractured" index="11"]
+surface_material_override/0 = ExtResource("3_rak2x")
+
+[node name="ExplodeOrigin" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.081, 0)
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
+
+[editable path="Potion_Fractured"]
