@@ -132,7 +132,6 @@ script = ExtResource("1_pq0dl")
 
 [node name="Potion" type="Node3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
-visible = false
 
 [node name="Cap_LP" type="MeshInstance3D" parent="Potion"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.820652, 0)
@@ -162,6 +161,7 @@ shape = SubResource("SphereShape3D_a80k7")
 
 [node name="Potion_Fractured" parent="." instance=ExtResource("5_oishs")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+visible = false
 
 [node name="Cap_LP_Fractured" parent="Potion_Fractured" index="0"]
 surface_material_override/0 = ExtResource("2_nmpxc")
