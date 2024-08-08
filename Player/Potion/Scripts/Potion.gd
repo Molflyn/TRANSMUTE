@@ -1,15 +1,20 @@
 class_name Potion
-extends RigidBody3D
+extends Node3D
 
-@export var shard_lifetime : float = 5
+@export_flags_3d_physics var frag_col_layer : int = 1
+@export_flags_3d_physics var frag_col_mask : int = 1
 
-func _on_body_entered(_body:Node):
+func _on_potion_rb_body_entered(body:Node):
 	explode()
 
 func explode():
-	if $Potion.visible == true and $Potion_Fractured.visible == false:
-		$Potion.queue_free()
-		$Potion_Fractured.visible = true
+	var parent = get_parent()
+	queue_free()
 
-		await get_tree().create_timer(shard_lifetime).timeout
-		queue_free()
+	for child in $Potion_Fractured.get_children():
+		if child is MeshInstance3D:
+			var frag : Fragment = preload("res://Player/Potion/Fragment.tscn").instantiate()
+			frag.init_from_mesh(child)
+			frag.collision_layer = frag_col_layer
+			frag.collision_mask = frag_col_mask
+			parent.add_child(frag)

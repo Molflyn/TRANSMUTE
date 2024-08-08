@@ -31,5 +31,5 @@ collision_layer = 3
 collision_mask = 3
 mesh = SubResource("QuadMesh_emorg")
 
-[node name="PotionRB" parent="." instance=ExtResource("1_6c1tq")]
-transform = Transform3D(-0.249907, -0.96827, 0, 0.96827, -0.249907, 0, 0, 0, 1, 0, 1, 0)
+[node name="Potion" parent="." instance=ExtResource("1_6c1tq")]
+transform = Transform3D(-0.177188, -0.984177, 0, 0.984177, -0.177188, 0, 0, 0, 1, 0, 1.61923, 0)

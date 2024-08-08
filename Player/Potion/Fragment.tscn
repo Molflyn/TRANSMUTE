@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://be1twwycaxcrq"]
+
+[ext_resource type="Script" path="res://Player/Potion/Fragment.gd" id="1_rhyui"]
+
+[node name="FragmentRB" type="RigidBody3D"]
+script = ExtResource("1_rhyui")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
