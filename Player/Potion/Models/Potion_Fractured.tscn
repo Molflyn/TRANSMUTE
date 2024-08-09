@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://0f1brj2iyjus"]
+
+[ext_resource type="PackedScene" uid="uid://s55t1tu1bq3e" path="res://Player/Potion/Models/Potion_Fractured.glb" id="1_dhw0p"]
+[ext_resource type="Script" path="res://Player/Potion/Models/Potion_Fracture_Test.gd" id="2_boruv"]
+
+[node name="Potion_Fractured" instance=ExtResource("1_dhw0p")]
+script = ExtResource("2_boruv")

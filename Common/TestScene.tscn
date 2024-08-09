@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://d067ypvsp0mct"]
 
-[ext_resource type="PackedScene" uid="uid://b71mno2uxrf2d" path="res://Player/Potion/Potion.tscn" id="1_6c1tq"]
+[ext_resource type="PackedScene" uid="uid://0f1brj2iyjus" path="res://Player/Potion/Models/Potion_Fractured.tscn" id="1_lones"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fqnrg"]
 
@@ -16,7 +16,7 @@ sky = SubResource("Sky_u7liw")
 [node name="TestScene" type="Node3D"]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 0.982713, 0.185135, 0, -0.185135, 0.982713, 0, 14.0194, 23.5503)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ko35q")
@@ -25,11 +25,13 @@ environment = SubResource("Environment_ko35q")
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 3, 0)
 
 [node name="CSGMesh3D" type="CSGMesh3D" parent="."]
-transform = Transform3D(4, 0, 0, 0, -1.74846e-07, 4, 0, -4, -1.74846e-07, 0, 0, 0)
+transform = Transform3D(19.7311, 0, 0, 0, -8.62475e-07, 19.7311, 0, -19.7311, -8.62475e-07, 0, 0, 0)
 use_collision = true
 collision_layer = 3
 collision_mask = 3
 mesh = SubResource("QuadMesh_emorg")
 
-[node name="Potion" parent="." instance=ExtResource("1_6c1tq")]
-transform = Transform3D(-0.177188, -0.984177, 0, 0.984177, -0.177188, 0, 0, 0, 1, 0, 1.61923, 0)
+[node name="Potion_Fractured" parent="." instance=ExtResource("1_lones")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.00536, 0)
+
+[editable path="Potion_Fractured"]
