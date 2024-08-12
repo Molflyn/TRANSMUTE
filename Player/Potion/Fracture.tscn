@@ -6,8 +6,10 @@
 top_level = true
 collision_layer = 3
 collision_mask = 3
+can_sleep = false
 max_contacts_reported = 1
 contact_monitor = true
 script = ExtResource("1_7kiiw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+top_level = true

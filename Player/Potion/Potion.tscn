@@ -1,10 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://b71mno2uxrf2d"]
+[gd_scene load_steps=18 format=3 uid="uid://b71mno2uxrf2d"]
 
 [ext_resource type="Script" path="res://Player/Potion/Scripts/Potion.gd" id="1_pq0dl"]
 [ext_resource type="Shader" path="res://Player/Potion/Mats/stylized_liquid.gdshader" id="2_jq0po"]
 [ext_resource type="Material" uid="uid://c4np1b38f4phs" path="res://Player/Potion/Mats/Brown.tres" id="2_nmpxc"]
 [ext_resource type="Script" path="res://Player/Potion/Scripts/LiquidWobble.gd" id="3_lcmww"]
 [ext_resource type="Material" uid="uid://cf8v0eiw46j7g" path="res://Player/Potion/Mats/Glass.tres" id="3_rak2x"]
+[ext_resource type="PackedScene" uid="uid://0f1brj2iyjus" path="res://Player/Potion/Models/Potion_Fractured.tscn" id="6_kk51t"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_gl8qe"]
 
@@ -156,4 +157,9 @@ skeleton = NodePath("")
 surface_material_override/0 = SubResource("ShaderMaterial_xy1pm")
 script = ExtResource("3_lcmww")
 
+[node name="Potion_Fractured" parent="." instance=ExtResource("6_kk51t")]
+visible = false
+
 [connection signal="body_entered" from="PotionRB" to="." method="_on_potion_rb_body_entered"]
+
+[editable path="Potion_Fractured"]

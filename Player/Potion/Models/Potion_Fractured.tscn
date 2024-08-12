@@ -1,7 +1,41 @@
-[gd_scene load_steps=3 format=3 uid="uid://0f1brj2iyjus"]
+[gd_scene load_steps=2 format=3 uid="uid://0f1brj2iyjus"]
 
 [ext_resource type="PackedScene" uid="uid://s55t1tu1bq3e" path="res://Player/Potion/Models/Potion_Fractured.glb" id="1_dhw0p"]
-[ext_resource type="Script" path="res://Player/Potion/Models/Potion_Fracture_Test.gd" id="2_boruv"]
 
 [node name="Potion_Fractured" instance=ExtResource("1_dhw0p")]
-script = ExtResource("2_boruv")
+
+[node name="Cap_LP_Fractured" parent="." index="0"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="Bottle_LP_Fractured_cell" parent="." index="1"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="Bottle_LP_Fractured_cell_001" parent="." index="2"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="Bottle_LP_Fractured_cell_002" parent="." index="3"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="Bottle_LP_Fractured_cell_003" parent="." index="4"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="Bottle_LP_Fractured_cell_004" parent="." index="5"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="Bottle_LP_Fractured_cell_005" parent="." index="6"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="Bottle_LP_Fractured_cell_006" parent="." index="7"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="Bottle_LP_Fractured_cell_007" parent="." index="8"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="Bottle_LP_Fractured_cell_008" parent="." index="9"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="Bottle_LP_Fractured_cell_009" parent="." index="10"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="Bottle_LP_Fractured_cell_010" parent="." index="11"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)

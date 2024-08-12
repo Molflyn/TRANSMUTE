@@ -6,7 +6,7 @@ func _unhandled_input(_event):
 		explode()
 
 func explode():
-	for child in get_children():
+	for child in $Potion_Fractured.get_children():
 		if child is MeshInstance3D:
 			var frag : Fracture = preload("res://Player/Potion/Fracture.tscn").instantiate()
 			frag.create_frag(child)
